@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1a1a2e">
-<title>Учёт расходов</title>
+<title>Expenses</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -25,9 +25,7 @@
   --radius: 12px;
   --shadow: 0 4px 24px rgba(0,0,0,0.4);
 }
-
 * { margin:0; padding:0; box-sizing:border-box; }
-
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--bg);
@@ -35,452 +33,206 @@ body {
   min-height: 100vh;
   -webkit-tap-highlight-color: transparent;
 }
-
-/* ===== HEADER ===== */
 .header {
   background: var(--surface);
   padding: 16px 20px 0;
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 100;
 }
-
 .header h1 {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 12px;
+  font-size: 20px; font-weight: 800;
+  letter-spacing: -0.5px; margin-bottom: 12px;
   display: flex; align-items: center; gap: 8px;
 }
-
 .header h1 span { color: var(--accent); }
-
-/* ===== TABS ===== */
 .tabs-wrap {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  padding-bottom: 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  display: flex; gap: 4px; overflow-x: auto;
+  padding-bottom: 0; scrollbar-width: none;
 }
 .tabs-wrap::-webkit-scrollbar { display: none; }
-
 .tab {
-  flex-shrink: 0;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-dim);
-  background: transparent;
-  border: none;
-  border-bottom: 3px solid transparent;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all .2s;
-  font-family: inherit;
+  flex-shrink: 0; padding: 8px 16px; font-size: 13px;
+  font-weight: 700; color: var(--text-dim); background: transparent;
+  border: none; border-bottom: 3px solid transparent;
+  cursor: pointer; white-space: nowrap; transition: all .2s; font-family: inherit;
 }
-.tab.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-/* ===== ADD FORM ===== */
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 .add-section {
-  padding: 16px 20px;
-  background: var(--surface);
-  margin: 12px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  padding: 16px 20px; background: var(--surface);
+  margin: 12px; border-radius: var(--radius); box-shadow: var(--shadow);
 }
-
-.form-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-  min-width: 0;
-}
-
+.form-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.form-group { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
 .form-group label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-dim);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--text-dim);
 }
-
-.form-group select,
-.form-group input {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  padding: 10px 12px;
-  font-size: 15px;
-  font-family: 'JetBrains Mono', monospace;
-  outline: none;
-  transition: border-color .2s;
-  width: 100%;
+.form-group select, .form-group input {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); padding: 10px 12px; font-size: 15px;
+  font-family: 'JetBrains Mono', monospace; outline: none;
+  transition: border-color .2s; width: 100%;
 }
-
-.form-group select:focus,
-.form-group input:focus {
-  border-color: var(--accent);
-}
-
+.form-group select:focus, .form-group input:focus { border-color: var(--accent); }
 .btn-add {
-  width: 100%;
-  padding: 12px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  transition: transform .1s, opacity .2s;
-  margin-top: 4px;
+  width: 100%; padding: 12px; background: var(--accent); color: #fff;
+  border: none; border-radius: 8px; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer; transition: transform .1s, opacity .2s; margin-top: 4px;
 }
 .btn-add:active { transform: scale(0.97); opacity: 0.9; }
-
-/* ===== TABLE ===== */
-.entries-section {
-  padding: 0 12px 120px;
-}
-
+.entries-section { padding: 0 12px 120px; }
 .summary-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 14px 16px;
-  background: var(--surface);
-  border-radius: var(--radius);
-  margin-bottom: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
+  display: flex; justify-content: space-between; padding: 14px 16px;
+  background: var(--surface); border-radius: var(--radius); margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
 }
-
-.summary-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
+.summary-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .summary-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-dim);
-  font-family: 'Nunito', sans-serif;
-  font-weight: 700;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text-dim); font-family: 'Nunito', sans-serif; font-weight: 700;
 }
-
-.summary-value {
-  font-weight: 600;
-  font-size: 16px;
-}
-
+.summary-value { font-weight: 600; font-size: 16px; }
 .summary-value.total { color: var(--accent); }
 .summary-value.avg { color: var(--green); }
 .summary-value.count { color: var(--text-dim); }
-
 .entry-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 12px 16px;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative;
-  transition: transform .2s, opacity .2s;
-  animation: slideIn .3s ease;
+  background: var(--surface); border-radius: var(--radius);
+  padding: 12px 16px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 10px;
+  transition: transform .2s, opacity .2s; animation: slideIn .3s ease;
 }
-
+.entry-card.excluded { opacity: 0.4; }
 @keyframes slideIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
+.entry-exclude {
+  width: 20px; height: 20px; accent-color: var(--accent);
+  cursor: pointer; flex-shrink: 0;
+}
 .entry-cat {
-  background: var(--accent2);
-  color: var(--text);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-  min-width: 70px;
-  text-align: center;
+  background: var(--accent2); color: var(--text);
+  padding: 4px 10px; border-radius: 6px; font-size: 12px;
+  font-weight: 700; white-space: nowrap; min-width: 60px; text-align: center;
 }
-
-.entry-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.entry-date {
-  font-size: 12px;
-  color: var(--text-dim);
-  font-family: 'JetBrains Mono', monospace;
-}
-
+.entry-info { flex: 1; min-width: 0; }
+.entry-date { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
 .entry-amount {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--accent);
-  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace; font-weight: 600;
+  font-size: 16px; color: var(--accent); white-space: nowrap;
 }
-
+.entry-amount.excluded-amount { text-decoration: line-through; color: var(--text-dim); }
 .entry-del {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  font-size: 18px;
-  cursor: pointer;
-  padding: 4px 8px;
-  opacity: 0.5;
-  transition: opacity .2s, color .2s;
+  background: none; border: none; color: var(--text-dim); font-size: 18px;
+  cursor: pointer; padding: 4px 8px; opacity: 0.5; transition: opacity .2s, color .2s;
 }
-.entry-del:hover, .entry-del:active {
-  opacity: 1;
-  color: var(--accent);
-}
-
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-dim);
-  font-size: 14px;
-}
-
+.entry-del:hover, .entry-del:active { opacity: 1; color: var(--accent); }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-dim); font-size: 14px; }
 .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
-
-/* ===== SETTINGS PANEL ===== */
 .settings-toggle {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  font-size: 20px;
-  cursor: pointer;
-  padding: 4px;
-  margin-left: auto;
+  background: none; border: none; color: var(--text-dim);
+  font-size: 20px; cursor: pointer; padding: 4px; margin-left: auto;
 }
-
 .settings-panel {
-  display: none;
-  padding: 16px 20px;
-  background: var(--surface);
-  margin: 12px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  display: none; padding: 16px 20px; background: var(--surface);
+  margin: 12px; border-radius: var(--radius); box-shadow: var(--shadow);
 }
-
 .settings-panel.open { display: block; }
-
-.settings-panel h3 {
-  font-size: 14px;
-  margin-bottom: 12px;
-  color: var(--text-dim);
-}
-
-.cat-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-
+.settings-panel h3 { font-size: 14px; margin-bottom: 12px; color: var(--text-dim); }
+.cat-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 .cat-chip {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--accent2);
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
+  display: flex; align-items: center; gap: 4px;
+  background: var(--accent2); padding: 6px 10px; border-radius: 6px;
+  font-size: 13px; font-weight: 600;
 }
-
-.cat-chip button {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  font-size: 14px;
-  cursor: pointer;
-  padding: 0 2px;
-}
-
-.cat-add-row {
-  display: flex;
-  gap: 8px;
-}
-
+.cat-chip button { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 0 2px; }
+.cat-add-row { display: flex; gap: 8px; }
 .cat-add-row input {
-  flex: 1;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  padding: 8px 12px;
-  font-size: 14px;
-  font-family: inherit;
-  outline: none;
+  flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); padding: 8px 12px; font-size: 14px; font-family: inherit; outline: none;
 }
-
 .cat-add-row button {
-  background: var(--accent2);
-  border: none;
-  color: var(--text);
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
+  background: var(--accent2); border: none; color: var(--text);
+  padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
 }
-
-.export-row {
-  margin-top: 12px;
-  display: flex;
-  gap: 8px;
-}
-
+.export-row { margin-top: 12px; display: flex; gap: 8px; }
 .export-row button {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface2);
-  color: var(--text);
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
+  flex: 1; padding: 10px; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text); border-radius: 8px;
+  font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
-
-/* ===== CONFIRM DIALOG ===== */
 .confirm-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 999;
-  align-items: center;
-  justify-content: center;
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6); z-index: 999; align-items: center; justify-content: center;
 }
 .confirm-overlay.open { display: flex; }
-
 .confirm-box {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 24px;
-  max-width: 300px;
-  width: 90%;
-  text-align: center;
-  box-shadow: var(--shadow);
+  background: var(--surface); border-radius: var(--radius); padding: 24px;
+  max-width: 320px; width: 90%; text-align: center; box-shadow: var(--shadow);
 }
-
-.confirm-box p {
-  margin-bottom: 16px;
-  font-size: 15px;
-}
-
-.confirm-btns {
-  display: flex;
-  gap: 8px;
-}
-
+.confirm-box p { margin-bottom: 16px; font-size: 15px; }
+.confirm-btns { display: flex; gap: 8px; }
 .confirm-btns button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
+  flex: 1; padding: 10px; border: none; border-radius: 8px;
+  font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
-
-.btn-cancel {
-  background: var(--surface2);
-  color: var(--text);
-}
-
-.btn-confirm {
-  background: var(--accent);
-  color: #fff;
-}
+.btn-cancel { background: var(--surface2); color: var(--text); }
+.btn-confirm { background: var(--accent); color: #fff; }
 </style>
 </head>
 <body>
-
 <div class="header">
-  <h1>
-    <span>●</span> Учёт расходов
-    <button class="settings-toggle" onclick="toggleSettings()" title="Настройки">⚙</button>
-  </h1>
+  <h1><span>●</span> Expenses <button class="settings-toggle" onclick="toggleSettings()" title="Налаштування">⚙</button></h1>
   <div class="tabs-wrap" id="tabs"></div>
 </div>
-
 <div class="settings-panel" id="settingsPanel">
-  <h3>Категории расходов</h3>
+  <h3>Категорії витрат</h3>
   <div class="cat-list" id="catList"></div>
   <div class="cat-add-row">
-    <input type="text" id="newCatInput" placeholder="Новая категория...">
+    <input type="text" id="newCatInput" placeholder="Нова категорія...">
     <button onclick="addCategory()">+</button>
   </div>
   <div class="export-row">
-    <button onclick="exportJSON()">📥 Экспорт JSON</button>
-    <button onclick="importJSON()">📤 Импорт JSON</button>
+    <button onclick="exportJSON()">📥 Експорт</button>
+    <button onclick="importJSON()">📤 Імпорт</button>
   </div>
 </div>
-
 <div class="add-section">
   <div class="form-row">
-    <div class="form-group" style="flex:1.2">
-      <label>Вид</label>
-      <select id="catSelect"></select>
-    </div>
-    <div class="form-group" style="flex:1.5">
-      <label>Дата / время</label>
-      <input type="datetime-local" id="dateInput">
-    </div>
-    <div class="form-group" style="flex:0.8">
-      <label>Сумма</label>
-      <input type="number" id="amountInput" placeholder="0" inputmode="decimal" step="0.01">
-    </div>
+    <div class="form-group" style="flex:1.2"><label>Вид</label><select id="catSelect"></select></div>
+    <div class="form-group" style="flex:1.5"><label>Дата / час</label><input type="datetime-local" id="dateInput"></div>
+    <div class="form-group" style="flex:0.8"><label>Сума</label><input type="number" id="amountInput" placeholder="0" inputmode="decimal" step="0.01"></div>
   </div>
-  <button class="btn-add" onclick="addEntry()">Добавить запись</button>
+  <button class="btn-add" onclick="addEntry()">Додати запис</button>
 </div>
-
 <div class="entries-section" id="entriesSection"></div>
-
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
-    <p id="confirmText">Удалить запись?</p>
+    <p id="confirmText"></p>
     <div class="confirm-btns">
-      <button class="btn-cancel" onclick="closeConfirm()">Отмена</button>
-      <button class="btn-confirm" id="confirmBtn">Удалить</button>
+      <button class="btn-cancel" onclick="closeConfirm()">Скасувати</button>
+      <button class="btn-confirm" id="confirmBtn">Видалити</button>
     </div>
   </div>
 </div>
-
 <input type="file" id="importFile" accept=".json" style="display:none">
-
 <script>
-// ===== STATE =====
 const STORAGE_KEY = 'expense_tracker_data';
-const DEFAULT_CATEGORIES = ['Еда', 'Транспорт', 'Жильё', 'Связь', 'Одежда', 'Здоровье', 'Развлечения', 'Прочее'];
+const DEFAULT_CATEGORIES = ['Їжа','Транспорт','Житло',"Зв'язок",'Одяг',"Здоров'я",'Розваги','Інше'];
+
+const RU_TO_UA = {'Еда':'Їжа','Транспорт':'Транспорт','Жильё':'Житло','Связь':"Зв'язок",'Одежда':'Одяг','Здоровье':"Здоров'я",'Развлечения':'Розваги','Прочее':'Інше'};
+
+function migrateData(data) {
+  data.entries.forEach(e => {
+    if (e.excluded === undefined) e.excluded = false;
+    if (RU_TO_UA[e.category]) e.category = RU_TO_UA[e.category];
+  });
+  data.categories = data.categories.map(c => RU_TO_UA[c] || c);
+  // Remove duplicates
+  data.categories = [...new Set(data.categories)];
+  return data;
+}
 
 let state = loadState();
 
@@ -491,316 +243,189 @@ function loadState() {
       const s = JSON.parse(raw);
       if (!s.categories || !s.categories.length) s.categories = [...DEFAULT_CATEGORIES];
       if (!s.entries) s.entries = [];
-      return s;
+      s.entries.forEach(e => { if (e.excluded === undefined) e.excluded = false; });
+      return migrateData(s);
     }
   } catch(e) {}
   return { categories: [...DEFAULT_CATEGORIES], entries: [] };
 }
 
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-// ===== PERIOD LOGIC: 10th to 10th =====
 function getPeriod(date) {
   const d = new Date(date);
   let startYear, startMonth;
-  if (d.getDate() >= 10) {
-    startYear = d.getFullYear();
-    startMonth = d.getMonth();
-  } else {
-    const prev = new Date(d.getFullYear(), d.getMonth() - 1, 1);
-    startYear = prev.getFullYear();
-    startMonth = prev.getMonth();
-  }
+  if (d.getDate() >= 10) { startYear = d.getFullYear(); startMonth = d.getMonth(); }
+  else { const prev = new Date(d.getFullYear(), d.getMonth()-1, 1); startYear = prev.getFullYear(); startMonth = prev.getMonth(); }
   const start = new Date(startYear, startMonth, 10, 0, 0, 0);
-  const end = new Date(startYear, startMonth + 1, 9, 23, 59, 59);
-  return {
-    key: `${startYear}-${String(startMonth).padStart(2,'0')}`,
-    start, end,
-    label: formatPeriodLabel(start, end)
-  };
+  const end = new Date(startYear, startMonth+1, 9, 23, 59, 59);
+  return { key: `${startYear}-${String(startMonth).padStart(2,'0')}`, start, end, label: formatPeriodLabel(start, end) };
 }
 
 function formatPeriodLabel(start, end) {
-  const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-  const s = `${start.getDate()} ${months[start.getMonth()]}`;
-  const e = `${end.getDate()} ${months[end.getMonth()]}`;
-  if (start.getFullYear() !== end.getFullYear()) {
-    return `${s} ${start.getFullYear()} – ${e} ${end.getFullYear()}`;
-  }
-  return `${s} – ${e}`;
+  const m = ['січ','лют','бер','кві','тра','чер','лип','сер','вер','жов','лис','гру'];
+  const s = `${start.getDate()} ${m[start.getMonth()]}`;
+  const e = `${end.getDate()} ${m[end.getMonth()]}`;
+  return start.getFullYear() !== end.getFullYear() ? `${s} ${start.getFullYear()} – ${e} ${end.getFullYear()}` : `${s} – ${e}`;
 }
 
 function getAllPeriods() {
-  const periodsMap = {};
-  // Always include current period
-  const now = new Date();
-  const cur = getPeriod(now);
-  periodsMap[cur.key] = cur;
-
-  state.entries.forEach(entry => {
-    const p = getPeriod(entry.date);
-    if (!periodsMap[p.key]) periodsMap[p.key] = p;
-  });
-
-  return Object.values(periodsMap).sort((a,b) => b.start - a.start);
+  const pm = {};
+  const cur = getPeriod(new Date()); pm[cur.key] = cur;
+  state.entries.forEach(e => { const p = getPeriod(e.date); if (!pm[p.key]) pm[p.key] = p; });
+  return Object.values(pm).sort((a,b) => b.start - a.start);
 }
 
-// ===== RENDERING =====
 let activePeriodKey = null;
 
-function render() {
-  renderCategories();
-  renderCatSelect();
-  renderTabs();
-  renderEntries();
-}
+function render() { renderCategories(); renderCatSelect(); renderTabs(); renderEntries(); }
 
 function renderTabs() {
   const periods = getAllPeriods();
-  if (!activePeriodKey || !periods.find(p => p.key === activePeriodKey)) {
-    activePeriodKey = periods[0]?.key;
-  }
-
-  const tabsEl = document.getElementById('tabs');
-  tabsEl.innerHTML = periods.map(p =>
-    `<button class="tab ${p.key === activePeriodKey ? 'active' : ''}"
-            onclick="switchTab('${p.key}')">${p.label}</button>`
-  ).join('');
-
-  // Scroll active tab into view
-  setTimeout(() => {
-    const active = tabsEl.querySelector('.tab.active');
-    if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-  }, 50);
+  if (!activePeriodKey || !periods.find(p => p.key === activePeriodKey)) activePeriodKey = periods[0]?.key;
+  const el = document.getElementById('tabs');
+  el.innerHTML = periods.map(p => `<button class="tab ${p.key===activePeriodKey?'active':''}" onclick="switchTab('${p.key}')">${p.label}</button>`).join('');
+  setTimeout(() => { const a = el.querySelector('.tab.active'); if (a) a.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'}); }, 50);
 }
 
-function switchTab(key) {
-  activePeriodKey = key;
-  renderTabs();
-  renderEntries();
-}
+function switchTab(key) { activePeriodKey = key; renderTabs(); renderEntries(); }
 
 function renderEntries() {
   const section = document.getElementById('entriesSection');
   const period = getAllPeriods().find(p => p.key === activePeriodKey);
-  if (!period) {
-    section.innerHTML = '<div class="empty-state"><div class="icon">📋</div>Нет периодов</div>';
-    return;
-  }
+  if (!period) { section.innerHTML = '<div class="empty-state"><div class="icon">📋</div>Немає періодів</div>'; return; }
 
-  const entries = state.entries
-    .filter(e => {
-      const d = new Date(e.date);
-      return d >= period.start && d <= period.end;
-    })
-    .sort((a,b) => new Date(b.date) - new Date(a.date));
+  const entries = state.entries.filter(e => { const d = new Date(e.date); return d >= period.start && d <= period.end; }).sort((a,b) => new Date(b.date) - new Date(a.date));
+  const active = entries.filter(e => !e.excluded);
+  const total = active.reduce((s, e) => s + e.amount, 0);
+  const uniqueDays = new Set(active.map(e => { const d = new Date(e.date); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; }));
+  const avg = uniqueDays.size ? total / uniqueDays.size : 0;
 
-  const total = entries.reduce((s, e) => s + e.amount, 0);
-  const avg = entries.length ? total / entries.length : 0;
+  let html = `<div class="summary-bar">
+    <div class="summary-item"><span class="summary-label">Записів</span><span class="summary-value count">${active.length}${entries.length!==active.length?'/'+entries.length:''}</span></div>
+    <div class="summary-item"><span class="summary-label">Разом</span><span class="summary-value total">${formatNum(total)}</span></div>
+    <div class="summary-item"><span class="summary-label">Сер/день</span><span class="summary-value avg">${formatNum(avg)}</span></div>
+  </div>`;
 
-  let html = `
-    <div class="summary-bar">
-      <div class="summary-item">
-        <span class="summary-label">Записей</span>
-        <span class="summary-value count">${entries.length}</span>
-      </div>
-      <div class="summary-item">
-        <span class="summary-label">Итого</span>
-        <span class="summary-value total">${formatNum(total)}</span>
-      </div>
-      <div class="summary-item">
-        <span class="summary-label">Средняя</span>
-        <span class="summary-value avg">${formatNum(avg)}</span>
-      </div>
-    </div>
-  `;
-
-  if (entries.length === 0) {
-    html += '<div class="empty-state"><div class="icon">📝</div>Нет записей за этот период<br><small>Добавьте первую запись выше</small></div>';
+  if (!entries.length) {
+    html += '<div class="empty-state"><div class="icon">📝</div>Немає записів за цей період<br><small>Додайте перший запис вище</small></div>';
   } else {
     entries.forEach(e => {
       const d = new Date(e.date);
-      const dateStr = `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      html += `
-        <div class="entry-card">
-          <div class="entry-cat">${esc(e.category)}</div>
-          <div class="entry-info">
-            <div class="entry-date">${dateStr}</div>
-          </div>
-          <div class="entry-amount">${formatNum(e.amount)}</div>
-          <button class="entry-del" onclick="confirmDelete('${e.id}')" title="Удалить">✕</button>
-        </div>
-      `;
+      const ds = `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      html += `<div class="entry-card ${e.excluded?'excluded':''}">
+        <input type="checkbox" class="entry-exclude" ${e.excluded?'checked':''} onchange="toggleExclude('${e.id}')" title="Не враховувати">
+        <div class="entry-cat">${esc(e.category)}</div>
+        <div class="entry-info"><div class="entry-date">${ds}</div></div>
+        <div class="entry-amount ${e.excluded?'excluded-amount':''}">${formatNum(e.amount)}</div>
+        <button class="entry-del" onclick="confirmDelete('${e.id}')" title="Видалити">✕</button>
+      </div>`;
     });
   }
-
   section.innerHTML = html;
 }
 
 function renderCategories() {
-  const list = document.getElementById('catList');
-  list.innerHTML = state.categories.map(c =>
-    `<div class="cat-chip">${esc(c)}<button onclick="removeCategory('${esc(c)}')" title="Удалить">✕</button></div>`
-  ).join('');
+  document.getElementById('catList').innerHTML = state.categories.map(c => `<div class="cat-chip">${esc(c)}<button onclick="removeCategory('${esc(c)}')" title="Видалити">✕</button></div>`).join('');
 }
 
 function renderCatSelect() {
-  const sel = document.getElementById('catSelect');
-  sel.innerHTML = state.categories.map(c =>
-    `<option value="${esc(c)}">${esc(c)}</option>`
-  ).join('');
+  document.getElementById('catSelect').innerHTML = state.categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
 }
 
-// ===== ACTIONS =====
 function addEntry() {
   const cat = document.getElementById('catSelect').value;
   const dateVal = document.getElementById('dateInput').value;
   const amountVal = document.getElementById('amountInput').value;
-
-  if (!amountVal || isNaN(parseFloat(amountVal))) {
-    shakeEl(document.getElementById('amountInput'));
-    return;
-  }
-
+  if (!amountVal || isNaN(parseFloat(amountVal))) { shakeEl(document.getElementById('amountInput')); return; }
   const date = dateVal ? new Date(dateVal).toISOString() : new Date().toISOString();
-  const amount = parseFloat(parseFloat(amountVal).toFixed(2));
-
-  state.entries.push({
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-    category: cat,
-    date: date,
-    amount: amount
-  });
-
+  state.entries.push({ id: Date.now().toString(36)+Math.random().toString(36).slice(2,6), category: cat, date, amount: parseFloat(parseFloat(amountVal).toFixed(2)), excluded: false });
   saveState();
   document.getElementById('amountInput').value = '';
   document.getElementById('dateInput').value = '';
-
-  // Switch to the period of the new entry
   activePeriodKey = getPeriod(date).key;
   render();
 }
 
-let pendingDeleteId = null;
+function toggleExclude(id) {
+  const e = state.entries.find(x => x.id === id);
+  if (e) { e.excluded = !e.excluded; saveState(); renderEntries(); }
+}
 
+let pendingDeleteId = null;
 function confirmDelete(id) {
   pendingDeleteId = id;
-  document.getElementById('confirmText').textContent = 'Удалить эту запись?';
+  document.getElementById('confirmText').textContent = 'Видалити цей запис?';
   document.getElementById('confirmOverlay').classList.add('open');
-  document.getElementById('confirmBtn').onclick = () => {
-    state.entries = state.entries.filter(e => e.id !== pendingDeleteId);
-    saveState();
-    closeConfirm();
-    render();
-  };
+  document.getElementById('confirmBtn').textContent = 'Видалити';
+  document.getElementById('confirmBtn').onclick = () => { state.entries = state.entries.filter(e => e.id !== pendingDeleteId); saveState(); closeConfirm(); render(); };
 }
 
-function closeConfirm() {
-  document.getElementById('confirmOverlay').classList.remove('open');
-  pendingDeleteId = null;
-}
+function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('open'); pendingDeleteId = null; }
 
 function addCategory() {
   const input = document.getElementById('newCatInput');
   const name = input.value.trim();
   if (!name || state.categories.includes(name)) return;
-  state.categories.push(name);
-  saveState();
-  input.value = '';
-  render();
+  state.categories.push(name); saveState(); input.value = ''; render();
 }
 
 function removeCategory(name) {
   if (state.categories.length <= 1) return;
-  state.categories = state.categories.filter(c => c !== name);
-  saveState();
-  render();
+  state.categories = state.categories.filter(c => c !== name); saveState(); render();
 }
 
-function toggleSettings() {
-  document.getElementById('settingsPanel').classList.toggle('open');
-}
+function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('open'); }
 
-// ===== EXPORT / IMPORT =====
 function exportJSON() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `expenses_${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  const json = JSON.stringify(state, null, 2);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(json).then(() => { alert('Дані скопійовано в буфер обміну!\nВставте в нотатки або файл для збереження.'); }).catch(() => showExportModal(json));
+  } else { showExportModal(json); }
+}
+
+function showExportModal(json) {
+  document.getElementById('confirmText').innerHTML = '<textarea id="exportArea" style="width:100%;height:200px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px;font-size:11px;font-family:monospace;" readonly>' + json.replace(/</g,'&lt;') + '</textarea><br><small>Виділіть все та скопіюйте</small>';
+  document.getElementById('confirmOverlay').classList.add('open');
+  document.getElementById('confirmBtn').textContent = 'OK';
+  document.getElementById('confirmBtn').onclick = () => closeConfirm();
+  setTimeout(() => { const a = document.getElementById('exportArea'); if (a) { a.focus(); a.select(); } }, 100);
 }
 
 function importJSON() {
-  const input = document.getElementById('importFile');
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
+  document.getElementById('confirmText').innerHTML = '<p style="margin-bottom:10px;">Вставте JSON дані:</p><textarea id="importArea" placeholder="Вставте JSON сюди..." style="width:100%;height:150px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px;font-size:11px;font-family:monospace;"></textarea>';
+  document.getElementById('confirmOverlay').classList.add('open');
+  document.getElementById('confirmBtn').textContent = 'Імпорт';
+  document.getElementById('confirmBtn').onclick = () => {
+    const area = document.getElementById('importArea');
+    if (area && area.value.trim()) {
       try {
-        const imported = JSON.parse(ev.target.result);
-        if (imported.entries && imported.categories) {
-          state = imported;
-          saveState();
-          render();
-        }
-      } catch(err) {
-        alert('Ошибка чтения файла');
-      }
-    };
-    reader.readAsText(file);
-    input.value = '';
+        const imp = JSON.parse(area.value.trim());
+        if (imp.entries && imp.categories) { migrateData(imp); state = imp; saveState(); render(); closeConfirm(); return; }
+      } catch(e) {}
+      alert('Невірний формат JSON');
+    }
+    closeConfirm();
   };
-  input.click();
 }
 
-// ===== HELPERS =====
-function formatNum(n) {
-  return n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-function pad(n) { return String(n).padStart(2, '0'); }
-
-function esc(s) {
-  const div = document.createElement('div');
-  div.textContent = s;
-  return div.innerHTML;
-}
-
+function formatNum(n) { return n.toLocaleString('uk-UA', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function pad(n) { return String(n).padStart(2,'0'); }
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 function shakeEl(el) {
-  el.style.borderColor = 'var(--accent)';
-  el.style.animation = 'none';
-  el.offsetHeight;
-  el.style.animation = 'shake .4s ease';
-  setTimeout(() => {
-    el.style.borderColor = '';
-    el.style.animation = '';
-  }, 500);
+  el.style.borderColor = 'var(--accent)'; el.style.animation = 'none'; el.offsetHeight;
+  el.style.animation = 'shake .4s ease'; setTimeout(() => { el.style.borderColor = ''; el.style.animation = ''; }, 500);
 }
 
-// Shake animation
-const style = document.createElement('style');
-style.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }`;
-document.head.appendChild(style);
+const st = document.createElement('style');
+st.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}`;
+document.head.appendChild(st);
 
-// Enter key support
-document.getElementById('amountInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') addEntry();
-});
-document.getElementById('newCatInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') addCategory();
-});
+document.getElementById('amountInput').addEventListener('keydown', e => { if (e.key==='Enter') addEntry(); });
+document.getElementById('newCatInput').addEventListener('keydown', e => { if (e.key==='Enter') addCategory(); });
 
-// ===== SERVICE WORKER =====
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
-}
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 
-// ===== INIT =====
 render();
 </script>
 </body>
