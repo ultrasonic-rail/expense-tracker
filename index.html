@@ -432,6 +432,16 @@ function parseIKO(text){
     r.forceCategory='Інше';
     return r;
   }
+  // Type 3: Google Wallet (Google Гаманець)
+  // Format: "JMP S.A. BIEDRONKA 206\n7,54 PLN – MetaMask Card ••4444"
+  const gwMatch=text.match(/([\d,]+)\s*PLN/i);
+  if(gwMatch){
+    r.amount=parseFloat(gwMatch[1].replace(',','.'));
+    // Place is in the first line (title)
+    const lines=text.split('\n');
+    r.place=lines[0]?lines[0].trim():'';
+    return r;
+  }
   return{};
 }
 
