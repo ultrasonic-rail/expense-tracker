@@ -228,8 +228,8 @@ function renderEntries(){
   h+=`<div class="summary-income"><span class="summary-income-label">Дохід:</span><input type="number" id="incomeInput" value="${pI||''}" placeholder="0" inputmode="decimal" step="0.01" onchange="setIncome(this.value)" onblur="setIncome(this.value)"></div>`;
   if(pI>0){const bal=pI-allTotal;h+=`<div class="summary-balance"><span class="summary-balance-label">Залишок:</span><span class="summary-balance-val ${bal>=0?'positive':'negative'}">${fN(bal)}</span></div>`;}
   // Noti status
-  const hasNoti=typeof AndroidNoti!=='undefined';
-  h+=`<div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;font-size:11px;color:var(--text-dim)">`;
+  //const hasNoti=typeof AndroidNoti!=='undefined';
+  //h+=`<div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;font-size:11px;color:var(--text-dim)">`;
   //if(!hasNoti){h+=`<div><span class="noti-dot off"></span>Авто — тільки в APK</div>`;}
   //else{
     //h+=`<div style="display:flex;gap:12px">`;
